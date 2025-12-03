@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="CSS/EstiloProyectoWEB1er.ccs">
+    <link rel="stylesheet" href="CSS/EstiloProyectoWEB1er.css">
 </head>
-<body style="margin: 20px;">
-    <header style="margin: 10px; border: solid;">
-        <div style="display: flex; align-items: center;">
-            <img src="Imagenes/LogoTransparente.png" alt="NO CARGA EL LOGO OE" style="width: 80px;height: 80px;">
+<body>
+    <header>
+        <div class="header-content">
+            <img src="Imagenes/LogoTransparente.png" alt="NO CARGA EL LOGO OE" class="logo">
             <h1>MORPHO ETHER</h1>
             <nav>
                 <input type="text" placeholder="Buscar">
@@ -19,45 +19,52 @@
             </nav>
         </div>
     </header>
+
     <main>
-        <section style="display: flex; margin: 20px; align-items: center;" >
-            <div style="width: 1024px; height: 330px;">
-                <img style="width: 100%; height: 100%; object-fit:contain;" src="Imagenes/ImagenesProyect/OIP (5).webp" alt="Imagen1">
+        <section class="obra">
+            <div class="imagen-contenedor">
+                <img src="Imagenes/ImagenesProyect/OIP (5).webp" alt="Imagen1">
             </div>
-            <div>
+
+            <div class="descripcion">
                 <h2>TITULO DE IMAGEN</h2>
                 <p><strong>AUTOR: </strong> PICASSO</p>
                 <p><strong>AÑO DE CREACION: </strong> 1999</p>
-                <p><strong>DESCRIPCION: </strong> Lorem ipsum dolor sit amet consectetur, adipisicing elit. Saepe deleniti delectus ullam tempora reiciendis, alias, ad distinctio quasi est rerum sunt consectetur cupiditate mollitia quo minima asperiores, dignissimos quibusdam quaerat?</p>
+                <p><strong>DESCRIPCION: </strong> Lorem ipsum dolor sit amet consectetur, adipisicing elit.</p>
             </div>
-            <div >
+
+            <div class="btns">
                 <button>REVISAR</button>
                 <button>CALIFICAR</button>
             </div>
         </section>
-        <br>
-        <section style="display: flex; margin: 20px; align-items: center;" >
-            <div style="display: flex; flex-direction: column;">
+
+        <section class="obra">
+            <div class="descripcion">
                 <h2>TITULO DE IMAGEN</h2>
                 <p><strong>AUTOR: </strong> PICASSO</p>
                 <p><strong>AÑO DE CREACION: </strong> 1999</p>
-                <p><strong>DESCRIPCION: </strong>  Lorem ipsum dolor sit amet consectetur, adipisicing elit. Saepe deleniti delectus ullam tempora reiciendis, alias, ad distinctio quasi est rerum sunt consectetur cupiditate mollitia quo minima asperiores, dignissimos quibusdam quaerat?</p>
+                <p><strong>DESCRIPCION: </strong> Lorem ipsum dolor sit amet consectetur, adipisicing elit.</p>
             </div>
-            <div >
+
+            <div class="btns">
                 <button>REVISAR</button>
                 <button>CALIFICAR</button>
             </div>
-            <div style="width: 1024px; height: 330px;">
-                <img style="width: 100%; height: 100%; object-fit:contain;" src="Imagenes/ImagenesProyect/Imagen2.webp" alt="Imagen1">
+
+            <div class="imagen-contenedor">
+                <img src="Imagenes/ImagenesProyect/Imagen2.webp" alt="Imagen1">
             </div>
         </section>
     </main>
-    <footer style="border: solid;">
-        <ul >
+
+    <footer>
+        <ul>
             <li><strong>Contacto: </strong> nombrecorreo@gmail.com</li>
             <li><strong>Reservado: </strong> ©MORPHO ETHER</li>
         </ul>
     </footer>
+
     <script src="JavaScript/DetrasDeTodosWEB2do.js"></script>
 </body>
 </html>

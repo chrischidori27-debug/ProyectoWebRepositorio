@@ -1,11 +1,9 @@
-/* -------------------- BODY -------------------- */
 body {
     margin: 20px;
     background: linear-gradient(90deg, #8a2be2, #4b79d8, #3aaed8);
     font-family: "Segoe UI", Arial, sans-serif;
 }
 
-/* -------------------- HEADER -------------------- */
 header {
     margin: 10px;
     border: solid 2px black;
@@ -101,7 +99,6 @@ nav button {
     cursor: pointer;
 }
 
-/* -------------------- FOOTER -------------------- */
 footer {
     border: solid 2px black;
     padding: 20px;
@@ -115,4 +112,84 @@ footer ul {
 
 footer li {
     padding: 5px 0;
+}
+/* RESPONSIVIDAD PARA CELULAR*/
+@media (max-width: 768px) {
+
+    body {
+        margin: 5px;
+    }
+
+    header {
+        margin: 5px;
+        padding: 10px;
+    }
+
+    .header-content {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 10px;
+    }
+
+    nav {
+        flex-direction: column;
+        gap: 10px;
+        margin-left: 0;
+    }
+
+    nav input {
+        width: 90%;
+    }
+
+    nav button {
+        width: 90%;
+    }
+
+    .obra {
+        flex-direction: column;
+        gap: 15px;
+        margin: 10px;
+    }
+
+    .imagen-contenedor {
+        width: 100%;
+        height: auto;
+    }
+
+    .imagen-contenedor img {
+        width: 100%;
+        height: auto;
+        max-height: 300px;
+    }
+
+    .descripcion {
+        width: 100%;
+        padding: 15px;
+    }
+
+    .descripcion h2 {
+        font-size: 24px;
+        text-align: center;
+    }
+
+    .btns {
+        flex-direction: row;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .btns button {
+        width: 45%;
+        padding: 10px;
+        font-size: 14px;
+    }
+    footer {
+        text-align: center;
+        padding: 15px;
+    }
+
+    footer li {
+        font-size: 14px;
+    }
 }

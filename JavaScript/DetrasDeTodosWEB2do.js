@@ -7,7 +7,7 @@ for (let i = 0; i < obras.length; i++) {
 
     const section = document.createElement("section");
     section.classList.add("obra");
-
+    //Estructuras de las obras
     const imagenHTML = `
         <div class="imagen-contenedor">
             <img src="${obra.imagen}" alt="${obra.titulo}">
@@ -30,7 +30,7 @@ for (let i = 0; i < obras.length; i++) {
         </div>
     `;
 
-    // Alternar izquierda/derecha usando i
+    // Alternar izquierda o derecha usando i
     if (i % 2 === 0) {
         section.innerHTML = `
             ${imagenHTML}
@@ -47,3 +47,14 @@ for (let i = 0; i < obras.length; i++) {
 
     contenedor.appendChild(section);
 }
+//Lleva a la venta de registro
+const btnReg = document.getElementById("btnRegistrarse");
+btnReg.addEventListener("click", () => {
+    window.location.href = "./ventanaLogin.html";
+});
+//Lleva a la ventana de iniciar sesion
+const btnIn = document.getElementById("btnInciarSesion");
+
+btnIn.addEventListener("click", () => {
+    window.location.href = "./ventanaSingUp.html";
+});

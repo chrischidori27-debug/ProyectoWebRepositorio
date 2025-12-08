@@ -7,13 +7,14 @@ body {
 
 header {
     margin: 10px;
-    border: solid 2px black;
+    border: solid 3px black;
     background: linear-gradient(90deg, #10336A, #1D5BA8);
 }
 
 .header-content {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 20px;
     padding: 13px;
 }
@@ -36,7 +37,12 @@ nav {
     margin-left: auto;
 }
 
-nav input {
+input {
+    padding: 8px 15px;
+    border-radius: 20px;
+    border: none;
+}
+textarea{
     padding: 8px 15px;
     border-radius: 20px;
     border: none;
@@ -59,15 +65,61 @@ button:hover{
     transform: scale(1.2);
 }
 .obra {
+    background: linear-gradient(90deg, #11356F, #0B2240);
     display: flex;
     align-items: center;
+    justify-content: center;
     margin: 20px;
+    border: 3px solid black;
 }
 
+.promedio {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: black;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 16px;
+}
+select{
+    border-radius: 10px;
+}
+.zona-calificacion {
+    width: 100%;
+    margin-top: 15px;
+}
+.contenedor-calificaciones {
+    max-height: 200px;
+    overflow-y: auto;
+    padding-right: 5px;
+}
+.form-calificacion {
+    background: rgba(0, 0, 0, 0.25);
+    padding: 10px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.calificacion {
+    background: rgba(0, 0, 0, 0.25);
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 10px;
+    color: white;
+}
+.oculto {
+    display: none;
+}
 .imagen-contenedor {
     width: 600px;
     height: 300px;
-    
+    position: relative;
+
 }
 
 .imagen-contenedor img {
@@ -77,10 +129,8 @@ button:hover{
 }
 
 .descripcion {
-    background: linear-gradient(90deg, #11356F, #0B2240);
     padding: 25px;
     width: 700px;
-    border: 2px solid black;
     color: white;
     border-radius: 5px;
 }
@@ -148,6 +198,7 @@ footer li {
         flex-direction: column;
         gap: 15px;
         margin: 10px;
+        padding: 10px;
     }
 
     .imagen-contenedor {

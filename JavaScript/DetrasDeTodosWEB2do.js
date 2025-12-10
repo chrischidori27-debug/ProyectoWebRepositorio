@@ -54,83 +54,116 @@ async function cargarBloque() {
 // Función para mostrar una obra
 function mostrarObra(obra, i) {
     const idObra = "obra-" + i;
+
     const divImagen = document.createElement("div");
     divImagen.classList.add("imagen-contenedor");
-    divImagen.innerHTML = `<span id="promedio-img-${idObra}" class="promedio">⭐ 0.0</span>
-                           <img src="${obra.imagen}" alt="${obra.titulo}">`;
+    divImagen.innerHTML = `
+        <span id="promedio-img-${idObra}" class="promedio">⭐ 0.0</span>
+        <img src="${obra.imagen}" alt="${obra.titulo}">
+    `;
     contenedor.appendChild(divImagen);
 
     if (!calificaciones[idObra]) calificaciones[idObra] = [];
-    let sumaPuntajes = calificaciones[idObra].reduce((sum, c) => sum + c.puntaje, 0);
-    let totalCalificaciones = calificaciones[idObra].length;
 
-    divImagen.addEventListener("click", () => {
-        modal.style.display = "flex";
+    divImagen.addEventListener("click", () => abrirModal(obra, idObra));
+}
 
-        // Calcular promedio actual
-        const promedio = totalCalificaciones ? (sumaPuntajes / totalCalificaciones).toFixed(1) : "0.0";
-        document.getElementById(`promedio-img-${idObra}`).textContent = `⭐ ${promedio}`;
+function abrirModal(obra, idObra) {
+    modal.style.display = "flex";
 
-        // Crear contenido del modal
-        modalInfo.innerHTML = `
-            <h2>${obra.titulo}</h2>
-            <p><strong>Autor:</strong> ${obra.autor}</p>
-            <p><strong>Año:</strong> ${obra.anio}</p>
-            <p><strong>Descripción:</strong> ${obra.descripcion}</p>
-            <img src="${obra.imagen}" style="width:100%; border-radius:10px; margin-top:10px;">
-            
-            <div class="form-calificacion">
-                <input type="text" id="nombre-${idObra}" placeholder="Tu nombre">
-                <select id="puntaje-${idObra}">
-                    <option value="1">1 estrella</option>
-                    <option value="2">2 estrellas</option>
-                    <option value="3">3 estrellas</option>
-                    <option value="4">4 estrellas</option>
-                    <option value="5">5 estrellas</option>
-                </select>
-                <textarea id="comentario-${idObra}" placeholder="Comentario..."></textarea>
-                <button id="guardar-${idObra}">GUARDAR</button>
-            </div>
+    const lista = calificaciones[idObra];
+    const suma = lista.reduce((s, c) => s + c.puntaje, 0);
+    const total = lista.length;
+    const promedio = total ? (suma / total).toFixed(1) : "0.0";
 
-            <div id="contenedor-${idObra}" class="contenedor-calificaciones"></div>
-        `;
+    document.getElementById(`promedio-img-${idObra}`).textContent = `⭐ ${promedio}`;
 
-        // Mostrar calificaciones previas si existen
-        const contCalif = document.getElementById(`contenedor-${idObra}`);
-        calificaciones[idObra].forEach(c => {
-            const estrellas = "★★★★★".slice(0, c.puntaje) + "☆☆☆☆☆".slice(0, 5 - c.puntaje);
-            contCalif.innerHTML += `<div class="calificacion"><h4>${c.nombre} — ${estrellas}</h4><p>${c.comentario}</p></div>`;
-        });
+    modalInfo.innerHTML = generarContenidoModal(obra, idObra);
 
-        const btnGuardar = document.getElementById(`guardar-${idObra}`);
-        btnGuardar.addEventListener("click", () => {
-            const nombre = document.getElementById(`nombre-${idObra}`).value;
-            const puntaje = parseInt(document.getElementById(`puntaje-${idObra}`).value);
-            const comentario = document.getElementById(`comentario-${idObra}`).value;
+    cargarCalificacionesPrevias(idObra);
 
-            if(nombre === "" || comentario === ""){
-                alert("Completa todos los campos.");
-                return;
-            }
+    const btnGuardar = document.getElementById(`guardar-${idObra}`);
+    btnGuardar.addEventListener("click", () => guardarCalificacion(idObra));
+}
 
-            // Guardar en el objeto calificaciones
-            calificaciones[idObra].push({nombre, puntaje, comentario});
-            sumaPuntajes += puntaje;
-            totalCalificaciones++;
+function generarContenidoModal(obra, idObra) {
+    return `
+        <h2>${obra.titulo}</h2>
+        <p><strong>Autor:</strong> ${obra.autor}</p>
+        <p><strong>Año:</strong> ${obra.anio}</p>
+        <p><strong>Descripción:</strong> ${obra.descripcion}</p>
+        <img src="${obra.imagen}" style="width:100%; border-radius:10px; margin-top:10px;">
 
-            // Actualizar promedio en la imagen
-            const promedioActual = (sumaPuntajes / totalCalificaciones).toFixed(1);
-            document.getElementById(`promedio-img-${idObra}`).textContent = `⭐ ${promedioActual}`;
+        <div class="form-calificacion">
+            <input type="text" id="nombre-${idObra}" placeholder="Tu nombre">
+            <select id="puntaje-${idObra}">
+                <option value="1">1 estrella</option>
+                <option value="2">2 estrellas</option>
+                <option value="3">3 estrellas</option>
+                <option value="4">4 estrellas</option>
+                <option value="5">5 estrellas</option>
+            </select>
+            <textarea id="comentario-${idObra}" placeholder="Comentario..."></textarea>
+            <button id="guardar-${idObra}">GUARDAR</button>
+        </div>
 
-            const estrellas = "★★★★★".slice(0, puntaje) + "☆☆☆☆☆".slice(0, 5 - puntaje);
-            contCalif.innerHTML += `<div class="calificacion"><h4>${nombre} — ${estrellas}</h4><p>${comentario}</p></div>`;
+        <div id="contenedor-${idObra}" class="contenedor-calificaciones"></div>
+    `;
+}
 
-            // Limpiar inputs
-            document.getElementById(`nombre-${idObra}`).value = "";
-            document.getElementById(`comentario-${idObra}`).value = "";
-        });
+function cargarCalificacionesPrevias(idObra) {
+    const cont = document.getElementById(`contenedor-${idObra}`);
+
+    calificaciones[idObra].forEach(c => {
+        const estrellas = generarEstrellas(c.puntaje);
+        cont.innerHTML += `
+            <div class="calificacion">
+                <h4>${c.nombre} — ${estrellas}</h4>
+                <p>${c.comentario}</p>
+            </div>`;
     });
 }
+
+function guardarCalificacion(idObra) {
+    const nombre = document.getElementById(`nombre-${idObra}`).value;
+    const puntaje = parseInt(document.getElementById(`puntaje-${idObra}`).value);
+    const comentario = document.getElementById(`comentario-${idObra}`).value;
+
+    if (!nombre || !comentario) {
+        alert("Completa todos los campos.");
+        return;
+    }
+
+    const nueva = { nombre, puntaje, comentario };
+    calificaciones[idObra].push(nueva);
+
+    actualizarPromedio(idObra);
+
+    const cont = document.getElementById(`contenedor-${idObra}`);
+    const estrellas = generarEstrellas(puntaje);
+    cont.innerHTML += `
+        <div class="calificacion">
+            <h4>${nombre} — ${estrellas}</h4>
+            <p>${comentario}</p>
+        </div>`;
+
+    document.getElementById(`nombre-${idObra}`).value = "";
+    document.getElementById(`comentario-${idObra}`).value = "";
+}
+
+function generarEstrellas(p) {
+    return "★★★★★".slice(0, p) + "☆☆☆☆☆".slice(0, 5 - p);
+}
+
+function actualizarPromedio(idObra) {
+    const lista = calificaciones[idObra];
+    const suma = lista.reduce((s, c) => s + c.puntaje, 0);
+    const total = lista.length;
+    const promedio = (suma / total).toFixed(1);
+
+    document.getElementById(`promedio-img-${idObra}`).textContent = `⭐ ${promedio}`;
+}
+
 
 // Inicializar
 async function cargar20prim() {

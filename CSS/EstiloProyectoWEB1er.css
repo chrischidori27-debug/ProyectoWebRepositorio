@@ -2,11 +2,11 @@ body {
     margin: 20px;
     background: linear-gradient(90deg, #8a2be2, #4b79d8, #3aaed8);
     font-family: "Segoe UI", Arial, sans-serif;
-    
 }
 
+/* ENCABEZADO */
 header {
-    margin: 10px;
+    margin: 10px auto;
     border: solid 3px black;
     background: linear-gradient(90deg, #10336A, #1D5BA8);
 }
@@ -30,27 +30,16 @@ header h1 {
     color: white;
 }
 
-nav {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    margin-left: auto;
-}
-
-input {
-    padding: 8px 15px;
+/* BOTONES, INPUTS Y TEXTAREA */
+input, textarea, select {
     border-radius: 20px;
     border: none;
-}
-textarea{
     padding: 8px 15px;
-    border-radius: 20px;
-    border: none;
 }
 
 button {
     width: 120px;
-    padding: 10px ;
+    padding: 10px;
     border: none;
     background: black;
     color: white;
@@ -59,50 +48,97 @@ button {
     cursor: pointer;
     transition: all 0.2s;
 }
-button:hover{
+
+button:hover {
     background: white;
     color: black;
     transform: scale(1.2);
 }
-.obra {
-    background: linear-gradient(90deg, #11356F, #0B2240);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+
+/* GALERÍA DE OBRAS */
+#contenedor-obra {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 columnas en escritorio */
+    gap: 15px;
     margin: 20px;
-    border: 3px solid black;
+}
+
+.imagen-contenedor {
+    position: relative;
+    height: 250px;
+    border-radius: 10px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.imagen-contenedor img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.imagen-contenedor:hover {
+    transform: scale(1.03);
 }
 
 .promedio {
     position: absolute;
-    top: 10px;
-    left: 10px;
+    top: 5px;
+    left: 5px;
     background: black;
     color: white;
-    padding: 5px 10px;
-    border-radius: 10px;
+    padding: 3px 6px;
+    border-radius: 5px;
     font-weight: bold;
-    font-size: 16px;
 }
-select{
-    border-radius: 10px;
-}
-.zona-calificacion {
-    width: 100%;
-    margin-top: 15px;
-}
-.contenedor-calificaciones {
-    max-height: 200px;
-    overflow-y: auto;
-    padding-right: 5px;
-}
-.form-calificacion {
-    background: rgba(0, 0, 0, 0.25);
-    padding: 10px;
 
+/* MODAL */
+.modal-contenedor {
+    display: none; /* oculto por defecto */
+    position: fixed;
+    top: 0; 
+    left: 0;
+    width: 100%; 
+    height: 100%;
+    background: rgba(0,0,0,0.6);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-contenido {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 500px;
+    width: 90%;
+    max-height: 80%;
+    overflow-y: auto;
+    position: relative;
+}
+
+#cerrar {
+    cursor: pointer;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+/* CALIFICACIONES DENTRO DEL MODAL */
+.form-calificacion {
     display: flex;
     flex-direction: column;
     gap: 10px;
+    margin-top: 10px;
+}
+
+.contenedor-calificaciones {
+    max-height: 200px;
+    overflow-y: auto;
+    margin-top: 10px;
 }
 
 .calificacion {
@@ -112,42 +148,10 @@ select{
     border-radius: 10px;
     color: white;
 }
-.oculto {
-    display: none;
-}
-.imagen-contenedor {
-    width: 600px;
-    height: 300px;
-    position: relative;
 
-}
-
-.imagen-contenedor img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-}
-
-.descripcion {
-    padding: 25px;
-    width: 700px;
-    color: white;
-    border-radius: 5px;
-}
-
-.descripcion h2 {
-    font-family: Georgia, "Times New Roman", serif;
-    font-size: 32px;
-}
-
-.btns {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    margin: 10px;
-}
-
+/* FOOTER */
 footer {
+    margin: 10px auto;
     border: solid 2px black;
     padding: 20px;
     background: linear-gradient(90deg, #10336A, #1D5BA8);
@@ -161,84 +165,22 @@ footer ul {
 footer li {
     padding: 5px 0;
 }
-/* RESPONSIVIDAD PARA CELULAR*/
+
+/* RESPONSIVIDAD */
+@media (max-width: 1024px) {
+    #contenedor-obra {
+        grid-template-columns: repeat(3, 1fr); /* 3 columnas en pantallas medianas */
+    }
+}
+
 @media (max-width: 768px) {
-
-    body {
-        margin: 5px;
+    #contenedor-obra {
+        grid-template-columns: repeat(2, 1fr); /* 2 columnas en tablet */
     }
+}
 
-    header {
-        margin: 5px;
-        padding: 10px;
-    }
-
-    .header-content {
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-        gap: 10px;
-    }
-
-    nav {
-        flex-direction: column;
-        gap: 10px;
-        margin-left: 0;
-    }
-
-    nav input {
-        width: 90%;
-    }
-
-    nav button {
-        width: 90%;
-    }
-
-    .obra {
-        flex-direction: column;
-        gap: 15px;
-        margin: 10px;
-        padding: 10px;
-    }
-
-    .imagen-contenedor {
-        width: 100%;
-        height: auto;
-    }
-
-    .imagen-contenedor img {
-        width: 100%;
-        height: auto;
-        max-height: 300px;
-    }
-
-    .descripcion {
-        width: 100%;
-        padding: 15px;
-    }
-
-    .descripcion h2 {
-        font-size: 24px;
-        text-align: center;
-    }
-
-    .btns {
-        flex-direction: row;
-        justify-content: center;
-        gap: 10px;
-    }
-
-    .btns button {
-        width: 45%;
-        padding: 10px;
-        font-size: 14px;
-    }
-    footer {
-        text-align: center;
-        padding: 15px;
-    }
-
-    footer li {
-        font-size: 14px;
+@media (max-width: 480px) {
+    #contenedor-obra {
+        grid-template-columns: 1fr; /* 1 columna en móvil */
     }
 }

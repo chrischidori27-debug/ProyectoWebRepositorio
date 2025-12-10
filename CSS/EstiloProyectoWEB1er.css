@@ -30,7 +30,7 @@ header h1 {
     color: white;
 }
 
-/* BOTONES, INPUTS Y TEXTAREA */
+/* GENERAL */
 input, textarea, select {
     border-radius: 20px;
     border: none;
@@ -54,7 +54,14 @@ button:hover {
     color: black;
     transform: scale(1.2);
 }
-
+a {
+    color: white;
+}
+a:hover {
+    color: #8a2be2;
+    text-decoration: underline; 
+    transition: all 0.3s;  
+}
 /* GALERÍA DE OBRAS */
 #contenedor-obra {
     display: grid;
@@ -108,7 +115,7 @@ button:hover {
 }
 
 .modal-contenido {
-    background: white;
+    background: linear-gradient(90deg, #10336A, #1D5BA8);
     padding: 20px;
     border-radius: 8px;
     max-width: 500px;
@@ -116,6 +123,7 @@ button:hover {
     max-height: 80%;
     overflow-y: auto;
     position: relative;
+    color: white;
 }
 
 #cerrar {

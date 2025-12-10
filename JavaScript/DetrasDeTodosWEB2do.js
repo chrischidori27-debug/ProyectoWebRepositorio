@@ -4,21 +4,24 @@ const cerrar = document.getElementById("cerrar");
 const modalInfo = document.getElementById("modal-info");
 const btnCargarMas = document.getElementById("cargar-mas");
 
-let allIDs = [];       // lista de IDs de las obras
-let obrasMostradas = 0; // cuántas obras se han cargado ya
+let allIDs = [];       
+let obrasMostradas = 0; 
 const obrasPorCarga = 20;
+
+// Objeto para guardar calificaciones por obra
+const calificaciones = {}; // clave: idObra, valor: array de {nombre, puntaje, comentario}
 
 // Obtener IDs de pinturas
 async function obtenerObrasIDs() {
-    const res = await fetch("https://collectionapi.metmuseum.org/public/collection/v1/objects?departmentIds=11");
-    const data = await res.json();
-    return data.objectIDs; // todos los IDs
+    const url = await fetch("https://collectionapi.metmuseum.org/public/collection/v1/objects?departmentIds=11");
+    const data = await url.json();
+    return data.objectIDs;
 }
 
 // Obtener datos de obra por ID
 async function obtenerDatosObra(objectID) {
-    const res = await fetch(`https://collectionapi.metmuseum.org/public/collection/v1/objects/${objectID}`);
-    const data = await res.json();
+    const url = await fetch(`https://collectionapi.metmuseum.org/public/collection/v1/objects/${objectID}`);
+    const data = await url.json();
     return {
         titulo: data.title || "Sin título",
         autor: data.artistDisplayName || "Desconocido",
@@ -31,19 +34,18 @@ async function obtenerDatosObra(objectID) {
 // Cargar y mostrar un bloque de obras
 async function cargarBloque() {
     let obrasCargadas = 0;
-    let index = obrasMostradas;
+    let cont = obrasMostradas;
 
-    while (obrasCargadas < obrasPorCarga && index < allIDs.length) {
-        const obra = await obtenerDatosObra(allIDs[index]);
-        index++;
-        if (!obra.imagen) continue; // ignorar si no tiene imagen
+    while (obrasCargadas < obrasPorCarga && cont < allIDs.length) {
+        const obra = await obtenerDatosObra(allIDs[cont]);
+        cont++;
+        if (!obra.imagen) continue;
 
         mostrarObra(obra, obrasMostradas);
         obrasMostradas++;
         obrasCargadas++;
     }
 
-    // Ocultar el botón si no hay mas obras
     if (obrasMostradas >= allIDs.length) {
         btnCargarMas.style.display = "none";
     }
@@ -58,11 +60,18 @@ function mostrarObra(obra, i) {
                            <img src="${obra.imagen}" alt="${obra.titulo}">`;
     contenedor.appendChild(divImagen);
 
-    let sumaPuntajes = 0;
-    let totalCalificaciones = 0;
+    if (!calificaciones[idObra]) calificaciones[idObra] = [];
+    let sumaPuntajes = calificaciones[idObra].reduce((sum, c) => sum + c.puntaje, 0);
+    let totalCalificaciones = calificaciones[idObra].length;
 
     divImagen.addEventListener("click", () => {
         modal.style.display = "flex";
+
+        // Calcular promedio actual
+        const promedio = totalCalificaciones ? (sumaPuntajes / totalCalificaciones).toFixed(1) : "0.0";
+        document.getElementById(`promedio-img-${idObra}`).textContent = `⭐ ${promedio}`;
+
+        // Crear contenido del modal
         modalInfo.innerHTML = `
             <h2>${obra.titulo}</h2>
             <p><strong>Autor:</strong> ${obra.autor}</p>
@@ -86,6 +95,13 @@ function mostrarObra(obra, i) {
             <div id="contenedor-${idObra}" class="contenedor-calificaciones"></div>
         `;
 
+        // Mostrar calificaciones previas si existen
+        const contCalif = document.getElementById(`contenedor-${idObra}`);
+        calificaciones[idObra].forEach(c => {
+            const estrellas = "★★★★★".slice(0, c.puntaje) + "☆☆☆☆☆".slice(0, 5 - c.puntaje);
+            contCalif.innerHTML += `<div class="calificacion"><h4>${c.nombre} — ${estrellas}</h4><p>${c.comentario}</p></div>`;
+        });
+
         const btnGuardar = document.getElementById(`guardar-${idObra}`);
         btnGuardar.addEventListener("click", () => {
             const nombre = document.getElementById(`nombre-${idObra}`).value;
@@ -97,31 +113,33 @@ function mostrarObra(obra, i) {
                 return;
             }
 
-            totalCalificaciones++;
+            // Guardar en el objeto calificaciones
+            calificaciones[idObra].push({nombre, puntaje, comentario});
             sumaPuntajes += puntaje;
-            const promedio = (sumaPuntajes / totalCalificaciones).toFixed(1);
-            document.getElementById(`promedio-img-${idObra}`).textContent = `⭐ ${promedio}`;
+            totalCalificaciones++;
+
+            // Actualizar promedio en la imagen
+            const promedioActual = (sumaPuntajes / totalCalificaciones).toFixed(1);
+            document.getElementById(`promedio-img-${idObra}`).textContent = `⭐ ${promedioActual}`;
 
             const estrellas = "★★★★★".slice(0, puntaje) + "☆☆☆☆☆".slice(0, 5 - puntaje);
-            const tarjeta = `<div class="calificacion"><h4>${nombre} — ${estrellas}</h4><p>${comentario}</p></div>`;
-            document.getElementById(`contenedor-${idObra}`).innerHTML += tarjeta;
+            contCalif.innerHTML += `<div class="calificacion"><h4>${nombre} — ${estrellas}</h4><p>${comentario}</p></div>`;
 
+            // Limpiar inputs
             document.getElementById(`nombre-${idObra}`).value = "";
             document.getElementById(`comentario-${idObra}`).value = "";
         });
     });
 }
 
-// Inicializar: obtener IDs y cargar primeras 20 obras
+// Inicializar
 async function cargar20prim() {
     allIDs = await obtenerObrasIDs();
     cargarBloque();
 }
 
-// Botón "Cargar más"
 btnCargarMas.addEventListener("click", cargarBloque);
 
-// Modal
 cerrar.addEventListener("click", () => modal.style.display = "none");
 window.addEventListener("click", (e) => { if(e.target === modal) modal.style.display = "none"; });
 
